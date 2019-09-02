@@ -151,7 +151,9 @@ excerpt_length: 50
 title-separator: "-"
 
 # Ruby Date Format
-date_format: "%B %-d, %Y"
+date_format: "%Y년 %m월 %d일"
+
+locale: ko-KR
 
 # --- Don't need to touch anything below here (but you can if you want) --- #
 
