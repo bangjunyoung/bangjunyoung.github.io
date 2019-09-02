@@ -76,6 +76,11 @@ rss:
   baseURL: "{{ '/feed.xml' | relative_url }}"
   icon: "fa-rss"
 
+feedburner:
+  name: "FeedBurner"
+  baseURL: "http://feeds.feedburner.com/"
+  icon: "fa-rss"
+  
 steam:
   name: "Steam"
   baseURL: "https://steamcommunity.com/id/"
