@@ -45,7 +45,7 @@ IEnumerable<int> LottoNumbers_Functional(int minValue, int maxValue, int count) 
 }
 ```
 
-여기서 `Distinct()`와 `Take(int)`는 `System.Linq.Enumerable` 정적 클래스에 들어 있는 확장 메쏘드들이다. 기존 문법대로 코드를 다시 써보면
+여기서 `Distinct()`와 `Take()`는 `System.Linq.Enumerable` 정적 클래스에 들어 있는 확장 메쏘드들이다. 기존 문법대로 코드를 다시 써보면
 
 ```csharp
 RunInfinite(() => rand.Next(minValue, maxValue + 1))
