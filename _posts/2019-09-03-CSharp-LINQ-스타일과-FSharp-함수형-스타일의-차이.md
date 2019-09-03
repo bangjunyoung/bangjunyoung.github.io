@@ -56,7 +56,8 @@ RunInfinite(() => rand.Next(minValue, maxValue + 1))
 
 ```csharp
 Enumerable.Distinct(
-    RunInfinite(() => rand.Next(minValue, maxValue + 1)))
+    RunInfinite(() => rand.Next(minValue, maxValue + 1))
+)
 ```
 
 로 바뀌게 되고, 뒤의 `.Take(count)`까지 바꾸면
@@ -64,8 +65,10 @@ Enumerable.Distinct(
 ```csharp
 Enumerable.Take(
     Enumerable.Distinct(
-        RunInfinite(() => rand.Next(minValue, maxValue + 1))),
-    count)
+        RunInfinite(() => rand.Next(minValue, maxValue + 1))
+    ),
+    count
+)
 ```
 
 가 된다. LINQ 스타일로 썼을 때는 가장 마지막에 실행되는 것처럼 보였던 `Take()`가 사실은 가장 먼저 실행되는 것을 볼 수 있다. `RunInfinite()` 메쏘드가 무한대로 실행되지 않는 이유도 그 때문이다. `Take()`가 내부 루프를 통해 `Distinct()`를 반복 호출하고, `Distinct()`는 다시 내부 루프를 통해 `RunInfinite()`를 반복 호출하기 때문에 `RunInfinite()`는 실제로 6번 + 중복제거된 횟수만큼만 실행되는 것이다.
