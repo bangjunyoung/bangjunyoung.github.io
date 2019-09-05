@@ -704,15 +704,18 @@ pre {
   font-size: 14px;
   line-height: 1.5em;
 }
-@media only screen and (max-width: 480px) {
-  pre {
-    font-size: 11px;
-  }
-}
 .highlight pre {
   border: none;
   background: none;
   margin: 0;
+}
+@media only screen and (max-width: 480px) {
+  pre {
+    font-size: 11px;
+  }
+  .highlight pre {
+    overflow-x: auto;
+  }
 }
 .highlight > pre {
   background-color: #f8f8f8;
