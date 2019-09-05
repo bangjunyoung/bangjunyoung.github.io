@@ -11,17 +11,21 @@ C#의 LINQ는 버전 3.0에 처음 도입된 기능으로, 그 이전까지 단�
 
 ## 확장 메쏘드
 
-사실 LINQ의 문법은 확장 메쏘드라는 아주 간단하고도 기발한 아이디어에서 출발하는데, 이 확장 메쏘드는 더 이상 메쏘드를 추가할 수 없는 기존 타입에 메쏘드가 추가된 것처럼 보이게 만드는 기능이다. 방법은 정적 클래스 안에 정적 메쏘드를 정의하면서 첫번째 파라미터 앞에 `this` 키워드를 붙여주면 된다. 즉, 아래처럼 하면:
+LINQ의 문법은 확장 메쏘드라는 아주 간단하고도 기발한 아이디어에서 출발하는데, 이 확장 메쏘드는 더 이상 메쏘드를 추가할 수 없는 기존 타입에 메쏘드가 추가된 것처럼 보이게 만드는 기능이다. 방법은 정적 클래스 안에 정적 메쏘드를 정의하면서 첫번째 파라미터 앞에 `this` 키워드를 붙여주면 된다. 즉, 아래처럼 하면:
 
 ```csharp
 static class Extension {
-    public static int KiloBytes(this int number) => number * 1024;
+    public static int KiloBytes(this int number) {
+        return number * 1024;
+    }
 }
 
 12.KiloBytes() == 12288 // true
 ```
 
-원래 `int` 타입에는 `KiloBytes()`란 메쏘드가 (당연히) 없지만 메쏘드의 첫번째 파라미터가 인스턴스 위치로 이동해서 마치 인스턴스 메쏘드를 호출하는 것처럼 보이게 되었다. 확장 메쏘드는 기본적으로 정적 메쏘드이기 때문에 아래처럼 기존 문법대로 써도 된다:
+마치 `int` 타입에 `KiloBytes()`란 인스턴스 메쏘드가 있는 것처럼 코드를 짤 수 있게 된다.
+
+확장 메쏘드는 기본적으로 정적 메쏘드이기 때문에 아래처럼 기존 문법대로 써도 된다:
 
 ```csharp
 Console.WriteLine(Extension.KiloBytes(12));
@@ -29,7 +33,7 @@ Console.WriteLine(Extension.KiloBytes(12));
 
 ## C# 함수형 스타일 로또 생성기
 
-[지난번](https://bangjunyoung.github.io/2019/08/26/함수형-프로그래밍이-어려운-이유/)에 만들었던 함수형 스타일 로또 생성기를 다시 가져와 보자:
+[지난번](https://bangjunyoung.github.io/2019/08/26/함수형-프로그래밍이-어려운-이유/)에 만들었던 함수형 스타일 로또 생성기를 다시 가져왔다:
 
 ```csharp
 IEnumerable<TResult> RunInfinite<TResult>(Func<TResult> func) {
@@ -71,11 +75,11 @@ Enumerable.Take(
 )
 ```
 
-가 된다. LINQ 스타일로 썼을 때는 가장 마지막에 실행되는 것처럼 보였던 `Take()`가 사실은 가장 먼저 실행되는 것을 볼 수 있다. `RunInfinite()` 메쏘드가 무한대로 실행되지 않는 이유도 그 때문이다. `Take()`가 내부 루프를 통해 `Distinct()`를 반복 호출하고, `Distinct()`는 다시 내부 루프를 통해 `RunInfinite()`를 반복 호출하기 때문에 `RunInfinite()`는 실제로 6번 + 중복제거된 횟수만큼만 실행되는 것이다.
+가 된다. LINQ 스타일로 썼을 때는 가장 마지막에 실행되는 것처럼 보였던 `Take()`가 사실은 가장 먼저 실행됨을 알 수 있다. `RunInfinite()` 메쏘드가 무한대로 실행되지 않는 이유도 그 때문이다. `Take()`가 내부 루프를 통해 `Distinct()`를 반복 호출하고, `Distinct()`는 다시 내부 루프를 통해 `RunInfinite()`를 반복 호출하기 때문에 `RunInfinite()`는 실제로 6번 + 중복제거된 회수만큼만 실행되는 것이다.
 
 ## F# 함수형 스타일 로또 생성기
 
-F# 버전의 로또 생성기는 이미 [지난번](https://bangjunyoung.github.io/2019/09/02/FSharp-함수-이해하기-2부/)에 다룬 바 있다. 파이프라인 연산자 `|>`를 이용해서 아래처럼 만들었던 코드가
+F# 버전의 로또 생성기는 이미 [지난번](https://bangjunyoung.github.io/2019/09/02/FSharp-함수-이해하기-2부/)에 다룬 바 있다. 파이프라인 연산자 `|>`를 이용해서 아래처럼 만들었던 코드를
 
 ```fsharp
 open System
